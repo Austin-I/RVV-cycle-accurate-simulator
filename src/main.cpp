@@ -2,21 +2,41 @@
 
 #include "vreg.hh"
 #include "vcsr_vtype.hh"
+#include "vcsr_vl_vstart.hh"
+#include "vcsr_vlenb.hh"
+#include "vcsr_vxrm.hh"
+#include "vcsr_vxsat.hh"
+#include "vcsr_vcsr.hh"
+
 
 #include <cstddef>
 #include <cstdint>
 #include <iostream>
 
-int main() {
-    size_t xlen_bits = 32; // RV32 system
-    size_t vlen_bits = 128; // Vector register width
+using xlen_t = uint32_t; // RV32 system
+// using xlen_t = uint64_t; // RV64 system
 
-    // Initialise CSRs
-    if (xlen_bits == 32) {
-        vcsr_vtype<uint32_t> vtype = vcsr_vtype<uint32_t>(xlen_bits);
-    } else {
-        vcsr_vtype<uint64_t> vtype = vcsr_vtype<uint64_t>(xlen_bits);
-    }
+template <typename T>
+struct VCSRs {
+    vcsr_vtype<T> vtype;
+    vcsr_vl_vstart<T>    vl;
+    vcsr_vl_vstart<T>    vstart;
+    vcsr_vlenb<T> vlenb;
+    vcsr_vxrm<T> vxrm;
+    vcsr_vxsat<T> vxsat;
+    vcsr_vcsr<T> vcsr;
+
+    VCSRs<T>(T vlen_bits) : vlenb(vlen_bits) {};
+
+};
+
+int main() {
+    // Parameters left open for the implementor in the RVV standarad
+    size_t xlen_bits = sizeof(xlen_t) * 8;
+    xlen_t vlen_bits = 128; // Vector register width
+
+    // Initialise VCSRs
+    VCSRs<xlen_t> vcsrs(vlen_bits);
 
     // Initialise vreg
     std::vector<vreg> vregs;

@@ -13,7 +13,10 @@
 template<typename T>
 class vcsr {
 public:
-    explicit vcsr(size_t _m_xlen_bits) : m_xlen_bytes(_m_xlen_bits / 8), value(0) {};
+    vcsr() : value(0)
+    {
+        m_xlen_bytes = sizeof(T);
+    };
 
     // Returns size of CSR in bytes
     size_t getSize() {

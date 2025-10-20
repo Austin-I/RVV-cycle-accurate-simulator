@@ -38,7 +38,7 @@ public:
     static constexpr size_t VILL_SIZE_BITS = 1;
 
 
-    explicit vcsr_vtype(size_t _m_xlen_bits) : vcsr<T>(_m_xlen_bits) {};
+    vcsr_vtype() : vcsr<T>() {};
 
     // Sets VLMUL value
     void setVLMUL(T _vlmul) {
